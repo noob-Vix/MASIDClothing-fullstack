@@ -92,7 +92,7 @@ public class EntityDtoMapper {
     //user to dto with address and order item history
     public UserDto userToDtoPlusAddressAndOrderHistory(User user){
         UserDto userDto = userToDtoPlusAddress(user);
-        if(user.getOrderItemList() != null&&user.getOrderItemList().isEmpty()){
+        if(user.getOrderItemList() != null&&!user.getOrderItemList().isEmpty()){
             userDto.setOrderItemList(user.getOrderItemList()
                     .stream()
                     .map(this::orderItemToDtoPlusProduct)
