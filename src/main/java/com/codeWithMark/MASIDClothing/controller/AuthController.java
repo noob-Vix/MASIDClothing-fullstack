@@ -3,6 +3,7 @@ package com.codeWithMark.MASIDClothing.controller;
 import com.codeWithMark.MASIDClothing.dto.LoginRequest;
 import com.codeWithMark.MASIDClothing.dto.Response;
 import com.codeWithMark.MASIDClothing.dto.UserDto;
+import com.codeWithMark.MASIDClothing.service.CaptchaService;
 import com.codeWithMark.MASIDClothing.service.interf.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final UserService userService;
+
 
     @PostMapping("/register")
     public ResponseEntity<Response> registerUser(@RequestBody UserDto registrationRequest){

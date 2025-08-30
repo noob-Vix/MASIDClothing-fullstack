@@ -10,9 +10,11 @@ import com.codeWithMark.MASIDClothing.exception.NotFoundException;
 import com.codeWithMark.MASIDClothing.mapper.EntityDtoMapper;
 import com.codeWithMark.MASIDClothing.repository.UserRepo;
 import com.codeWithMark.MASIDClothing.security.JwtUtils;
+import com.codeWithMark.MASIDClothing.service.CaptchaService;
 import com.codeWithMark.MASIDClothing.service.interf.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -31,6 +33,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
     private final EntityDtoMapper entityDtoMapper;
+    private final CaptchaService captchaService;
 
     @Override
     public Response registerUser(UserDto registrationRequest) {
@@ -62,12 +65,18 @@ public class UserServiceImpl implements UserService {
         if(!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())){
             throw new InvalidCredentialException("Password  does not match");
         }
+        if (!captchaService.verifyCaptcha(loginRequest.getCaptchaToken())) {
+            log.info("Received login request -> email: {}, password: {}, captcha: {}",
+                    loginRequest.getEmail(), loginRequest.getPassword(), loginRequest.getCaptchaToken());
+            throw new InvalidCredentialException("Invalid reCaptcha token  does not match");
+        }
         String token = jwtUtils.generateToken(user);
         return Response
                 .builder()
                 .status(200)
                 .message("User login successfully")
                 .token(token)
+                .captchaToken(loginRequest.getCaptchaToken())
                 .expirationTime("expires in 6 months")
                 .role(user.getUserRole().name())
                 .build();

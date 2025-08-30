@@ -11,4 +11,6 @@ public class LoginRequest {
     private String email;
     @NotBlank(message = "password is required")
     private String password;
+    @NotBlank(message = "captcha token is required")
+    private String captchaToken;
 }

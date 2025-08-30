@@ -17,6 +17,7 @@ public class Response {
     private final LocalDateTime timeStamp = LocalDateTime.now();
 
     private String token;
+    private String captchaToken;
     private String role;
     private String expirationTime;
 
