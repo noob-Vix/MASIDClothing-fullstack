@@ -29,7 +29,7 @@ public class SecurityConfig {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/auth/**","category/**","/produc/**t","order/**")
+                        .requestMatchers("/auth/**","category/**","/product/**","order/**")
                         .permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager

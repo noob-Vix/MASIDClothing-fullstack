@@ -15,4 +15,6 @@ public interface UserService {
     User getLoginUser();
 
     Response getUserInfoAndOrderHistory();
+
+    Response getUserInfo(Long id);
 }

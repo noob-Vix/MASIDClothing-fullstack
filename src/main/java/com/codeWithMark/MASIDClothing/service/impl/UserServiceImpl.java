@@ -66,8 +66,6 @@ public class UserServiceImpl implements UserService {
             throw new InvalidCredentialException("Password  does not match");
         }
         if (!captchaService.verifyCaptcha(loginRequest.getCaptchaToken())) {
-            log.info("Received login request -> email: {}, password: {}, captcha: {}",
-                    loginRequest.getEmail(), loginRequest.getPassword(), loginRequest.getCaptchaToken());
             throw new InvalidCredentialException("Invalid reCaptcha token  does not match");
         }
         String token = jwtUtils.generateToken(user);
@@ -107,6 +105,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public Response getUserInfoAndOrderHistory() {
         User user = getLoginUser();
+        UserDto userDto = entityDtoMapper.userToDtoPlusAddressAndOrderHistory(user);
+        return Response.builder()
+                .status(200)
+                .user(userDto)
+                .build();
+    }
+
+    @Override
+    public Response getUserInfo(Long id) {
+        User user = userRepo.findById(id)
+                .orElseThrow(() -> new NotFoundException("User Not Found"));
         UserDto userDto = entityDtoMapper.userToDtoPlusAddressAndOrderHistory(user);
         return Response.builder()
                 .status(200)
