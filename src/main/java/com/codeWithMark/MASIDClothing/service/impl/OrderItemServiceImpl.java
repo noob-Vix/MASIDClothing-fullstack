@@ -118,4 +118,22 @@ public class OrderItemServiceImpl implements OrderItemService {
                 .totalElement(orderItemPage.getTotalElements())
                 .build();
     }
+    @Override
+    public Response cancelOrder(Long orderItemId){
+        OrderItem orderItem = orderItemRepo.findById(orderItemId)
+                .orElseThrow(()-> new NotFoundException("Order Item not found"));
+
+        if(orderItem.getStatus() != OrderStatus.PENDING) {
+            return Response.builder()
+                    .status(200)
+                    .message("Order cannot be cancelled at this stage")
+                    .build();
+        }
+        orderItem.setStatus(OrderStatus.CANCELLED);
+        orderItemRepo.save(orderItem);
+        return Response.builder()
+                .status(200)
+                .message("Order cancelled successfully")
+                .build();
+    }
 }
