@@ -7,13 +7,13 @@ type ProductInfoProps = {
 
 export default function ProductInfo({ product }: ProductInfoProps) {
     return (
-        <DialogContent className="min-w-[50%] p-0 overflow-hidden">
+        <DialogContent className="min-w-[50%] p-0 overflow-hidden max-sm:overflow-scroll max-sm:h-screen max-sm:min-w-screen max-sm:rounded-none">
         <div className="flex w-full">
-          <div className="flex flex-row gap-2 w-full">
-            <div className="relative w-1/2 h-full bg-neutral-900 flex justify-center items-center">
+          <div className="flex flex-row gap-2 w-full max-sm:flex-col">
+            <div className="relative w-1/2 h-full bg-neutral-900 flex justify-center items-center max-sm:w-full">
               <img src={typeof product.imageUrl === "string" ? product.imageUrl : URL.createObjectURL(product.imageUrl)} alt="Product Image" />
             </div>
-            <div className="p-4 w-1/2 h-full flex flex-col justify-between gap-4">
+            <div className="p-4 w-1/2 max-sm:w-full h-full flex flex-col justify-between gap-4">
               <div className="flex flex-col space-y-2">
                 <DialogHeader className="mb-4">
                   <DialogTitle className="font-semibold text-neutral-800">

@@ -11,11 +11,11 @@ type CustomerInfoProps = {
 
 export default function CustomerInfo({ customer }: CustomerInfoProps) {
   return (
-    <DialogContent className="flex flex-col items-center justify-center">
-      <DialogHeader className="w-full">
+    <DialogContent className="flex flex-col items-center max-sm:justify-start justify-center max-sm:h-screen max-sm:min-w-screen max-sm:rounded-none">
+      <DialogHeader className="w-full ">
         <DialogTitle className="text-neutral-800">Buyer Information</DialogTitle>
       </DialogHeader>
-      <div className="flex gap-10">
+      <div className="flex gap-10 max-sm:flex-col max-sm:w-full">
         <div>
           <div>
             <h1 className="font-semibold text-sm text-neutral-800">Name</h1>

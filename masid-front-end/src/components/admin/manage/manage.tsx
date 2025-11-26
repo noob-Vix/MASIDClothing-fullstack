@@ -18,9 +18,9 @@ export default function Manage() {
       <header className="flex shrink-0 items-center gap-2 p-4 justify-between">
         <div className="flex flex-col w-full gap-5">
           <div className="flex flex-row justify-between items-center">
-            <div className="flex flex-row">
+            <div className="flex flex-row mr-4">
               <SidebarTrigger className="-ml-1" />
-              <h1 className="font-semibold text-lg text-neutral-800">Manage</h1>
+              <h1 className="font-semibold text-lg text-neutral-800 max-sm:hidden">Manage</h1>
             </div>
             <SearchForm />
           </div>

@@ -12,6 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useRegister } from "@/hooks/useRegister";
+import { Link } from "react-router";
 
 type RegisterProps = {
   role?: "admin" | ""
@@ -27,7 +28,7 @@ const formSchema = z.object({
 });
 
 export default function RegisterForm({ role, href, title }: RegisterProps) {
-    const { register } = useRegister()
+    const { register, isLoading, error } = useRegister()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -121,6 +122,7 @@ export default function RegisterForm({ role, href, title }: RegisterProps) {
               <FormControl>
                 <Input
                   placeholder="Password"
+                  type="password"
                   {...field}
                   className="border-gray-900"
                   required
@@ -130,14 +132,15 @@ export default function RegisterForm({ role, href, title }: RegisterProps) {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">
+        <p>{error ? error : null}</p>
+        <Button type="submit" className="w-full" disabled={isLoading}>
           Register
         </Button>
         <p className="text-gray-900 text-md text-center">
           Already have an account?{" "}
-          <a className="text-blue-700" href={href ? href : "/auth/buyer/login"}>
+          <Link className="text-blue-700" to={href ? href : "/auth/buyer/login"}>
             Login
-          </a>
+          </Link>
         </p>
       </form>
     </Form>

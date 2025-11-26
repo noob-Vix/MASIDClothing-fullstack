@@ -25,36 +25,86 @@ type extendedProducts = product & {
 
 export default function CustomerAddToCart() {
   const { user } = useAuthContext();
+  const { product } = useProductContext();
+
   const [cart, setCart] = useState<extendedProducts[] | []>([]);
   const [checkedItems, setCheckedItems] = useState<item[]>([]);
-  const { product } = useProductContext();
   const [isLoading, setIsLoading] = useState(false);
 
-  // console.log(cart);
+  const SHIPPING_FEE = 50; // Fixed shipping fee
 
+  // Load cart from localStorage and map to product details
   useEffect(() => {
-    function getCart() {
-      const localCart = localStorage.getItem("item");
-      if (!localCart) return;
+    const localCart = localStorage.getItem("item");
+    if (!localCart) return;
 
-      const cartItems: item[] = JSON.parse(localCart);
+    const cartItems: item[] = JSON.parse(localCart);
 
-      const items = product
-        .filter((p) => cartItems.some((ci) => ci.productId === p.id))
-        .map((p) => ({
-          ...p,
-          quantity:
-            cartItems.find((ci) => ci.productId === p.id)?.quantity ?? 1,
-        }));
-      setCart(items);
-      setCheckedItems(
-        items.map((item) => ({ productId: item.id, quantity: item.quantity }))
-      );
-    }
+    const items = product
+      .filter((p) => cartItems.some((ci) => ci.productId === p.id))
+      .map((p) => ({
+        ...p,
+        quantity: cartItems.find((ci) => ci.productId === p.id)?.quantity ?? 1,
+      }));
 
-    getCart();
+    setCart(items);
+
+    // Initially mark all items as checked
+    setCheckedItems(
+      items.map((item) => ({ productId: item.id, quantity: item.quantity }))
+    );
   }, [product]);
 
+  // Save cart to localStorage
+  function saveCartToLocal(updated: extendedProducts[]) {
+    localStorage.setItem(
+      "item",
+      JSON.stringify(updated.map((i) => ({ productId: i.id, quantity: i.quantity })))
+    );
+  }
+
+  // Increment quantity
+  function increaseQuantity(id: string) {
+    const updated = cart.map((item) =>
+      item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+    );
+    setCart(updated);
+    saveCartToLocal(updated);
+
+    // Update checkedItems if item is checked
+    setCheckedItems((prev) =>
+      prev.map((ci) =>
+        ci.productId === id ? { ...ci, quantity: ci.quantity + 1 } : ci
+      )
+    );
+  }
+
+  // Decrement quantity (min 1)
+  function decreaseQuantity(id: string) {
+    const updated = cart.map((item) =>
+      item.id === id && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
+    );
+    setCart(updated);
+    saveCartToLocal(updated);
+
+    setCheckedItems((prev) =>
+      prev.map((ci) =>
+        ci.productId === id && ci.quantity > 1
+          ? { ...ci, quantity: ci.quantity - 1 }
+          : ci
+      )
+    );
+  }
+
+  // Remove single item from cart
+  function handleRemoveItem(id: string) {
+    const newCart = cart.filter((i) => i.id !== id);
+    setCart(newCart);
+    saveCartToLocal(newCart);
+    setCheckedItems((prev) => prev.filter((ci) => ci.productId !== id));
+  }
+
+  // Toggle check/uncheck single item
   const handleCheckItem = (id: string, quantity: number) => {
     setCheckedItems((prev) =>
       prev.some((item) => item.productId === id)
@@ -62,30 +112,30 @@ export default function CustomerAddToCart() {
         : [...prev, { productId: id, quantity }]
     );
   };
+
+  // Toggle check all
   const handleCheckAll = () => {
     if (checkedItems.length === cart.length) {
       setCheckedItems([]);
     } else {
-      setCheckedItems(
-        cart.map((item) => ({ productId: item.id, quantity: item.quantity }))
-      );
+      setCheckedItems(cart.map((item) => ({ productId: item.id, quantity: item.quantity })));
     }
   };
 
+  // Place order
   async function placeOrder() {
+    if (!checkedItems.length) return toast.error("No items selected!");
+
     setIsLoading(true);
-    console.log(JSON.stringify({ items: checkedItems }));
-    const response = await fetch(
-      `${import.meta.env.VITE_SERVER_URL}/order/create`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-        },
-        body: JSON.stringify({ items: checkedItems }),
-      }
-    );
+
+    const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/order/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+      body: JSON.stringify({ items: checkedItems }),
+    });
 
     const json = await response.json();
 
@@ -95,26 +145,25 @@ export default function CustomerAddToCart() {
     }
 
     toast.success(json.message);
-    setCart(
-      cart.filter((i) => !checkedItems.some((ci) => i.id !== ci.productId))
+
+    // Remove only checked items from cart
+    const remaining = cart.filter(
+      (i) => !checkedItems.some((ci) => ci.productId === i.id)
     );
-    const updatedCart = cart.map((item) => ({
-      productId: item.id,
-      quantity: item.quantity,
-    }));
-    localStorage.setItem("item", JSON.stringify(updatedCart));
+    setCart(remaining);
+    saveCartToLocal(remaining);
+
+    // Clear checked items
+    setCheckedItems([]);
     setIsLoading(false);
   }
 
-  function handleRemoveItem(id: string) {
-    const newCart = cart.filter((i) => i.id !== id);
-    setCart(newCart);
-    const updatedCart = newCart.map((item) => ({
-      productId: item.id,
-      quantity: item.quantity,
-    }));
-    localStorage.setItem("item", JSON.stringify(updatedCart));
-  }
+  // Calculate total
+  const totalPrice = checkedItems.reduce((acc, ci) => {
+  const productPrice = Number(cart.find((p) => p.id === ci.productId)?.price ?? 0);
+  return acc + productPrice * ci.quantity;
+}, 0);
+
 
   return (
     <Dialog>
@@ -123,45 +172,43 @@ export default function CustomerAddToCart() {
           <ShoppingCart className="!size-6" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="flex flex-col max-sm:rounded-none max-sm:min-w-full max-sm:min-h-full  max-h-[60%]">
+      <DialogContent className="flex flex-col max-sm:rounded-none max-sm:min-w-full max-sm:min-h-full max-h-[60%]">
         <DialogHeader>
           <DialogTitle className="text-neutral-800 text-start">Your Cart</DialogTitle>
           <DialogDescription hidden>Your cart</DialogDescription>
         </DialogHeader>
-        <div className="flex flex-col overflow-y-scroll h-full gap-2 ">
-          {cart.length !== 0 ? (
+
+        <div className="flex flex-col overflow-y-scroll h-full gap-2">
+          {cart.length ? (
             cart.map((item) => (
               <div key={item.id} className="flex gap-3 max-w-full items-center">
                 <input
                   type="checkbox"
-                  checked={checkedItems.some(
-                    (checked) => checked.productId === item.id
-                  )}
+                  checked={checkedItems.some((checked) => checked.productId === item.id)}
                   onChange={() => handleCheckItem(item.id, item.quantity)}
                   className="accent-neutral-800"
                 />
                 <img
                   className="aspect-square object-cover w-[3rem] rounded-2xl"
-                  src={
-                    typeof item.imageUrl === "string"
-                      ? item.imageUrl
-                      : URL.createObjectURL(item.imageUrl)
-                  }
+                  src={typeof item.imageUrl === "string" ? item.imageUrl : URL.createObjectURL(item.imageUrl)}
                   alt="product image"
                 />
-                <div className="flex flex-col w-full overflow-hidden ">
-                  <div>
-                    <h1 className="text-md overflow-hidden text-ellipsis font-semibold text-neutral-800">
-                      {item.name}
-                    </h1>
-                  </div>
-                  <div className="flex justify-between">
-                    <p className="font-semibold text-md text-neutral-700">
-                      Quantity: {item.quantity}
-                    </p>
-                    <span className="font-semibold text-md text-neutral-700">
-                      Price: {item.price}
-                    </span>
+                <div className="flex flex-col w-full overflow-hidden">
+                  <h1 className="text-md overflow-hidden text-ellipsis font-semibold text-neutral-800">
+                    {item.name}
+                  </h1>
+                  <div className="flex justify-between items-center mt-1">
+                    {/* Quantity controls */}
+                    <div className="flex items-center gap-2">
+                      <Button variant="outline" size="sm" onClick={() => decreaseQuantity(item.id)}>
+                        -
+                      </Button>
+                      <span className="font-semibold text-md text-neutral-700">{item.quantity}</span>
+                      <Button variant="outline" size="sm" onClick={() => increaseQuantity(item.id)}>
+                        +
+                      </Button>
+                    </div>
+                    <span className="font-semibold text-md text-neutral-700">₱{item.price}</span>
                     <Button
                       variant={"outline"}
                       size={"sm"}
@@ -180,7 +227,19 @@ export default function CustomerAddToCart() {
             </div>
           )}
         </div>
-        <div className="flex justify-between items-center h-fit py-2 gap-2 mt-auto ">
+
+        {/* Total and shipping */}
+        <div className="flex flex-col gap-1 mt-2">
+          <p className="text-neutral-700 font-semibold">
+            Subtotal: ₱{totalPrice}
+          </p>
+          <p className="text-neutral-700 font-semibold">Shipping: ₱{SHIPPING_FEE}</p>
+          <p className="text-neutral-800 font-bold">
+            Total: ₱{totalPrice + SHIPPING_FEE}
+          </p>
+        </div>
+
+        <div className="flex justify-between items-center h-fit py-2 gap-2 mt-auto">
           <label className="flex items-center gap-2">
             <input
               type="checkbox"
@@ -190,7 +249,7 @@ export default function CustomerAddToCart() {
             />
             <span className="font-semibold text-neutral-700">Check All</span>
           </label>
-          <Button onClick={placeOrder} disabled={cart.length === 0}>
+          <Button onClick={placeOrder} disabled={cart.length === 0 || !checkedItems.length}>
             {isLoading ? <Loader2Icon /> : "Place Order"}
           </Button>
         </div>

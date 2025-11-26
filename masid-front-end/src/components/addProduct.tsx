@@ -162,15 +162,15 @@ export default function AddProduct() {
   }
 
   return (
-    <DialogContent className="min-w-[50%] p-0 overflow-hidden">
+    <DialogContent className="min-w-[50%] max-sm:h-full max-sm:min-w-full max-sm:rounded-none p-0 overflow-hidden">
       {isLoading && <Loading />}
       <div className="flex w-full">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-row gap-2 w-full"
+            className="flex flex-row gap-2 w-full max-sm:flex-col"
           >
-            <div className="relative w-1/2 h-full bg-neutral-400 flex justify-center items-center">
+            <div className="relative w-1/2 max-sm:w-full h-full bg-neutral-400 flex justify-center items-center">
               {image && <img src={URL.createObjectURL(image)} />}
               <FormField
                 control={form.control}
@@ -211,7 +211,7 @@ export default function AddProduct() {
                 )}
               />
             </div>
-            <div className="p-4 w-1/2 h-full flex flex-col justify-between gap-4">
+            <div className="p-4 w-1/2 max-sm:w-full h-full flex flex-col justify-between gap-4">
               <div className="flex flex-col space-y-2">
                 <DialogHeader className="mb-4">
                   <DialogTitle className="font-semibold text-neutral-800">
@@ -323,7 +323,7 @@ export default function AddProduct() {
                   />
                 </div>
               </div>
-              <DialogFooter>
+              <DialogFooter className="flex-row justify-end">
                 <DialogClose asChild>
                   <Button
                     variant="outline"

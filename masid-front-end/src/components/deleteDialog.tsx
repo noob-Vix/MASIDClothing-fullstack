@@ -40,7 +40,7 @@ export default function DeleteDialog({
           {triggerText}
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent className="w-fit">
+      <AlertDialogContent className="w-fit max-sm:w-[90%]">
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
           <AlertDialogDescription hidden>{description}</AlertDialogDescription>

@@ -7,14 +7,26 @@ import { Routes, Route, Navigate } from "react-router";
 import { useAuthContext } from "./context/AuthContext";
 import BuyerHome from "./pages/buyer/BuyerHome";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import SearchProduct from "@/components/buyer/searchProduct";
+import ProductInfo from "@/components/buyer/productInfo";
+import Orders from "@/components/admin/orders/orders";
+import Users from "@/components/admin/users/users";
+import Manage from "@/components/admin/manage/manage";
+import GuestPage from "./pages/guestPage";
+import AboutPage from "./pages/About";
+import ContactPage from "./pages/Contact";
+
 
 function App() {
   const { user } = useAuthContext();
 
   return (
     <Routes>
+
+      <Route path="" element={!user ? <GuestPage /> : <Navigate to={"/auth/buyer/login"} />}/>
+
       <Route
-        path="admin/dashboard/*"
+        path="admin/dashboard"
         element={
           user && user.role === "ADMIN" ? (
             <AdminDashboard />
@@ -22,17 +34,28 @@ function App() {
             <Navigate to={"/auth/admin/login"} />
           )
         }
-      />
+      >
+        <Route index element={<Manage />} />
+        <Route path="orders" element={<Orders />} />
+        <Route path="users" element={<Users />} />
+      </Route>
+
       <Route
-        path="buyer/*"
+        path="buyer"
         element={
-          user && user.role === "USER" ? (
-            <BuyerHome />
+          user ? (
+            user.role !== "USER" && <Navigate to={"/admin/dashboard"} />
           ) : (
             <Navigate to={"/auth/buyer/login"} />
           )
         }
-      />
+      >
+        <Route index element={<BuyerHome />} />
+        <Route path="search" element={<SearchProduct />} />
+        <Route path="product-info" element={<ProductInfo />} />
+        <Route path="*" element={<Navigate to={"/auth/buyer/login"} />} />
+      </Route>
+
       <Route
         path="auth/buyer/login"
         element={
@@ -48,10 +71,10 @@ function App() {
       <Route
         path="auth/buyer/register"
         element={
-          !user || user.role !== "USER" ? (
+          !user ? (
             <BuyerRegister />
           ) : (
-            <Navigate to={"/buyer"} />
+            user.role !== "USER" ? <Navigate to={"/admin/dashboard"} /> : <Navigate to={"/buyer"} />
           )
         }
       />
@@ -83,12 +106,15 @@ function App() {
         path="*"
         element={
           !user ? (
-            <Navigate to={"/auth/buyer/login"} />
+            <Navigate to={""} />
           ) : (
             <Navigate to={"/buyer"} />
           )
         }
       />
+      <Route path="/" element={<GuestPage />} />
+      <Route path="/about" element={<AboutPage />} />
+      <Route path="/contact" element={<ContactPage />} />
     </Routes>
   );
 }

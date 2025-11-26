@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { Trash } from "lucide-react";
+import { Loader2, Trash } from "lucide-react";
 import { useProductContext } from "@/context/ProductContext";
 import { useAuthContext } from "@/context/AuthContext";
 import { toast } from "sonner";
@@ -67,7 +67,7 @@ export default function DeleteCategory({
           <Trash size={15} /> Delete
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent className="w-fit">
+      <AlertDialogContent className="w-fit max-sm:min-w-full">
         <AlertDialogHeader>
           <AlertDialogTitle>Delete Category</AlertDialogTitle>
           <AlertDialogDescription hidden>
@@ -79,7 +79,7 @@ export default function DeleteCategory({
         </p>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
+          <AlertDialogAction onClick={handleDelete}>{isLoading ? <Loader2 className="animate-spin"/> : "Delete"}</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

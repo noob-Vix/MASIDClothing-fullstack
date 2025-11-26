@@ -53,7 +53,7 @@ export default function Main() {
       {isLoading ? (
         ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l"].map(
           (i) => (
-            <div key={i} className="flex flex-col rounded-[10px] overflow-hidden gap-1 border border-neutral-800 h-44 w-40 animate-pulse bg-neutral-100">
+            <div key={i} className="flex flex-col rounded-[10px] overflow-hidden gap-1 border border-gray-300 h-44 w-40 animate-pulse bg-neutral-100">
               <Skeleton className="h-full w-full bg-neutral-300" />
               <div className="p-2 text-sm flex flex-col gap-2 w-full">
                 <div>

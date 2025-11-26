@@ -14,6 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useLogin } from "@/hooks/useLogin";
+import { Link } from "react-router";
 
 type LoginProps = {
   href?: string;
@@ -27,7 +28,7 @@ const formSchema = z.object({
 });
 
 export function LoginForm({ href, title, des }: LoginProps) {
-  const { login } = useLogin();
+  const { login, isLoading, error } = useLogin();
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   // console.log(captchaToken)
   const form = useForm<z.infer<typeof formSchema>>({
@@ -84,6 +85,7 @@ export function LoginForm({ href, title, des }: LoginProps) {
               <FormControl>
                 <Input
                   placeholder="Password"
+                  type="password"
                   {...field}
                   className="border-gray-900"
                   required
@@ -93,17 +95,18 @@ export function LoginForm({ href, title, des }: LoginProps) {
             </FormItem>
           )}
         />
+        <p>{error ? error : null}</p>
         <ReCAPTCHA 
         sitekey="6Ldpk7ArAAAAAEWjwcTREcHRH4u12ByICBHD-s3Q"
         onChange={(token) => setCaptchaToken(token)}/>
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-full" disabled={isLoading}>
           Login
         </Button>
         <p className="text-gray-900 text-md text-center">
           Don't have an account?{" "}
-          <a className="text-blue-700" href={href ? href : "/auth/buyer/register"}>
+          <Link className="text-blue-700" to={href ? href : "/auth/buyer/register"}>
             Register
-          </a>
+          </Link>
         </p>
       </form>
     </Form>

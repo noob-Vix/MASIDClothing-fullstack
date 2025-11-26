@@ -55,14 +55,14 @@ export default function ProductDialog({ product, closeDialog }: ProductDialogPro
   }
 
   return (
-    <DialogContent className="min-w-[50%] p-0 overflow-hidden">
+    <DialogContent className="min-w-[50%] max-sm:min-h-full max-sm:min-w-full max-sm:rounded-none p-0 overflow-hidden">
       {!isUpdate ? (
         <div className="flex w-full">
-          <div className="flex flex-row gap-2 w-full">
-            <div className="relative w-1/2 h-full bg-neutral-900 flex justify-center items-center">
-              <img src={typeof product.imageUrl === "string" ? product.imageUrl : URL.createObjectURL(product.imageUrl)} alt="Product Image" />
+          <div className="flex flex-row max-sm:flex-col gap-2 w-full">
+            <div className="relative w-1/2 max-sm:w-full h-full bg-neutral-900 flex justify-center items-center">
+              <img className="object-contain w-full aspect-square" src={typeof product.imageUrl === "string" ? product.imageUrl : URL.createObjectURL(product.imageUrl)} alt="Product Image" />
             </div>
-            <div className="p-4 w-1/2 h-full flex flex-col justify-between gap-4">
+            <div className="p-4 w-1/2 max-sm:w-full h-full flex flex-col justify-between gap-4">
               <div className="flex flex-col space-y-2">
                 <DialogHeader className="mb-4">
                   <DialogTitle className="font-semibold text-neutral-800">

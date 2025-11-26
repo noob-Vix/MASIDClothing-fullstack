@@ -46,7 +46,7 @@ export default function ProductList() {
   }
 
   return (
-    <main className="flex flex-wrap overflow-y-scroll gap-2 p-2">
+    <main className="flex flex-wrap overflow-y-scroll gap-2 px-4">
       <Dialog
         open={clickProduct !== null}
         onOpenChange={() => setClickProduct(null)}
@@ -67,7 +67,7 @@ export default function ProductList() {
           <div
             key={p.id}
             onClick={() => onClickProduct(p)}
-            className="flex flex-row rounded-[10px] overflow-hidden gap-1 border border-neutral-800 h-32 min-w-64"
+            className="flex flex-row rounded-[10px] overflow-hidden gap-1 border border-gray-300 h-32 min-w-64"
           >
             <img
               src={
@@ -75,7 +75,7 @@ export default function ProductList() {
                   ? p.imageUrl
                   : URL.createObjectURL(p.imageUrl)
               }
-              className="h-full"
+              className="h-full aspect-square object-cover"
             />
             <div className="p-2 text-sm max-w-36">
               <div>

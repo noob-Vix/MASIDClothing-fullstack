@@ -53,16 +53,16 @@ export default function ItemsTable({ orders }: ItemsTableProps) {
   }
 
   return (
-    <div className="border-1 border-neutral-300 rounded-2xl h-full overflow-hidden">
-      <table className="w-full">
+    <div className="border-1 max-sm:overflow-auto border-neutral-300 rounded-2xl h-full overflow-hidden">
+      <table className="w-full max-sm:w-fit">
         <thead>
           <tr className="text-neutral-800 bg-neutral-200">
-            <th className="font-semibold p-3">Order ID</th>
-            <th className="font-semibold p-3">QTY</th>
-            <th className="font-semibold p-3">Price</th>
-            <th className="font-semibold p-3">Ordered At</th>
-            <th className="font-semibold p-3">Status</th>
-            <th></th>
+            <th className="font-semibold p-3 min-w-24">Order ID</th>
+            <th className="font-semibold p-3 min-w-24">QTY</th>
+            <th className="font-semibold p-3 min-w-24">Price</th>
+            <th className="font-semibold p-3 min-w-28">Ordered At</th>
+            <th className="font-semibold p-3 min-w-36">Status</th>
+            <th className="min-w-68"></th>
           </tr>
         </thead>
         <tbody className="text-center">

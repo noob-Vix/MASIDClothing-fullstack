@@ -10,10 +10,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { category, product } from "@/types/data";
+import type { product } from "@/types/data";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
@@ -191,9 +191,9 @@ export default function UpdateProduct({ product, cancel, closeDialog }: UpdatePr
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-row gap-2 w-full"
+            className="flex flex-row max-sm:flex-col gap-2 w-full"
           >
-            <div className="relative w-1/2 h-full bg-neutral-900 flex justify-center items-center">
+            <div className="relative w-1/2 max-sm:w-full h-full bg-neutral-900 flex justify-center items-center">
               {newImage ? (
                 <img src={URL.createObjectURL(newImage)} />
               ) : (
@@ -237,7 +237,7 @@ export default function UpdateProduct({ product, cancel, closeDialog }: UpdatePr
                 )}
               />
             </div>
-            <div className="p-4 w-1/2 h-full flex flex-col justify-between gap-4">
+            <div className="p-4 w-1/2 max-sm:w-full max-sm:h-1/2 h-full flex flex-col justify-between gap-4">
               <div className="flex flex-col space-y-2">
                 <DialogHeader className="mb-4">
                   <DialogTitle className="font-semibold text-neutral-800">
@@ -357,7 +357,7 @@ export default function UpdateProduct({ product, cancel, closeDialog }: UpdatePr
                   />
                 </div>
               </div>
-              <DialogFooter>
+              <DialogFooter className="flex-row justify-end">
                 <Button
                   variant="outline"
                   className="w-24"

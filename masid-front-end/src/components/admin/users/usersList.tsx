@@ -6,15 +6,15 @@ type UsersListProps = {
 
 export default function UsersList({ users }: UsersListProps) {
   return (
-    <div className="border-1 border-neutral-300 rounded-2xl h-full overflow-hidden">
+    <div className="border-1 border-neutral-300 max-sm:overflow-auto rounded-2xl h-full overflow-hidden">
       <table className="w-full">
         <thead>
           <tr className="text-neutral-800 bg-neutral-200">
-            <th className="font-semibold p-3">User ID</th>
-            <th className="font-semibold p-3">Name</th>
-            <th className="font-semibold p-3">Email</th>
-            <th className="font-semibold p-3">Phone Number</th>
-            <th className="font-semibold p-3">Role</th>
+            <th className="font-semibold p-3 min-w-24">User ID</th>
+            <th className="font-semibold p-3 min-w-40">Name</th>
+            <th className="font-semibold p-3 min-w-40">Email</th>
+            <th className="font-semibold p-3 min-w-40">Phone Number</th>
+            <th className="font-semibold p-3 min-w-24">Role</th>
           </tr>
         </thead>
         <tbody className="text-center">

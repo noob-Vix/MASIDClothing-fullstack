@@ -11,6 +11,7 @@ import { useAuthContext } from "@/context/AuthContext";
 import Loading from "./loading";
 import { toast } from "sonner";
 import { useProductContext } from "@/context/ProductContext";
+import { Button } from "./ui/button";
 
 export function SearchForm({ ...props }: React.ComponentProps<"form">) {
   const [input, setInput] = useState("");
@@ -104,8 +105,8 @@ export function SearchForm({ ...props }: React.ComponentProps<"form">) {
   }
 
   return (
-    <div className="flex flex-row gap-2 w-full">
-      <form {...props} onSubmit={handleSearch}>
+    <div className="flex flex-wrap gap-2 w-full">
+      <form {...props} onSubmit={handleSearch} className="flex gap-3 w-full items-center">
         <Input
           type="search"
           placeholder="Search Products"
@@ -113,6 +114,7 @@ export function SearchForm({ ...props }: React.ComponentProps<"form">) {
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
+        <Button type="submit">Search</Button>
       </form>
       <Select onValueChange={(value) => handleFilterByCategory(value)}>
         <SelectTrigger className="min-w-[8rem] text-neutral-700 font-medium capitalize">

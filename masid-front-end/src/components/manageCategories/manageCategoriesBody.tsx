@@ -14,6 +14,7 @@ import type { category } from "@/types/data";
 import UpdateCategory from "./updateCategory";
 import AddCategory from "./addCategory";
 import DeleteCategory from "./deleteCategory";
+import { Loader2 } from "lucide-react";
 
 export default function ManageCategoriesBody() {
   const [input, setInput] = useState("");
@@ -80,11 +81,13 @@ export default function ManageCategoriesBody() {
   }
 
   return (
-    <DialogContent className="max-h-11/12 flex flex-col gap-6">
+    <DialogContent className="max-h-11/12 flex flex-col gap-6 max-sm:min-w-full max-sm:min-h-full max-sm:rounded-none">
       <DialogHeader>
-        <DialogTitle className="text-neutral-800">Manage Categories</DialogTitle>
+        <DialogTitle className="text-neutral-800">
+          Manage Categories
+        </DialogTitle>
         <DialogDescription hidden></DialogDescription>
-        <div className="flex flex-row gap-2 mt-4">
+        <div className="flex flex-wrap gap-2 mt-4">
           <Button variant={"outline"} onClick={getProductCategory}>
             All
           </Button>
@@ -104,9 +107,11 @@ export default function ManageCategoriesBody() {
         />
       </form>
       <div className="h-full">
-        {localResult.length === 0
+        {isLoading && <div className="w-full h-full flex justify-center items-center"><Loader2 className="animate-spin"/></div>}
+        {!isLoading && localResult.length === 0
           ? categories.map((c) => (
               <div
+                key={c.id}
                 className={
                   active?.id === c.id
                     ? "bg-neutral-200 w-full flex flex-row text-neutral-800 font-semibold text-1xl rounded-sm"
@@ -124,6 +129,7 @@ export default function ManageCategoriesBody() {
             ))
           : localResult.map((c) => (
               <div
+                key={c.id}
                 className={
                   active?.id === c.id
                     ? "bg-neutral-200 w-full flex flex-row text-neutral-800 font-semibold text-1xl rounded-sm"
