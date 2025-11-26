@@ -51,7 +51,7 @@ public class OrderItemController {
         return ResponseEntity.ok(orderItemService.filterOrderItems(orderStatus, startDate, endDate, itemId, pageable));
 
     }
-    @PutMapping("/cancelOrder")
+    @PutMapping("/cancelOrder/{orderItemId}")
     public ResponseEntity<Response> cancelOrder(@PathVariable Long orderItemId){
         return ResponseEntity.ok(orderItemService.cancelOrder(orderItemId));
     }
