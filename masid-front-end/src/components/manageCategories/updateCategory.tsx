@@ -30,7 +30,7 @@ export default function UpdateCategory({
   const { user } = useAuthContext();
   const { dispatch } = useProductContext();
   const [input, setInput] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
 
   async function handleUpdate() {
     setIsLoading(true);

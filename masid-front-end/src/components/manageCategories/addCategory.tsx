@@ -23,7 +23,7 @@ type AddCategoryProps = {
 export default function AddCategory({}: AddCategoryProps) {
   const { user } = useAuthContext();
   const [input, setInput] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
 
   async function handleAddNew() {
     setIsLoading(true);

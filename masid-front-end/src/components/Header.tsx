@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router"; // Use `next/link` if Next.js
 
 export default function Header() {
