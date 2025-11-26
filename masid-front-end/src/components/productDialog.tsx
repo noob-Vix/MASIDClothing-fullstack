@@ -20,7 +20,7 @@ type ProductDialogProps = {
 
 export default function ProductDialog({ product, closeDialog }: ProductDialogProps) {
   const [isUpdate, setIsUpdate] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
   const { user } = useAuthContext();
   const { dispatch } = useProductContext();
 
