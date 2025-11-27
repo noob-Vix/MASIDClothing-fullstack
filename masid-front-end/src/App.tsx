@@ -3,7 +3,7 @@ import BuyerRegister from "./pages/buyer/BuyerRegister";
 import BuyerLogin from "./pages/buyer/BuyerLogin";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminRegister from "./pages/admin/AdminRegister";
-import { Routes, Route, Navigate } from "react-router";
+import { Routes, Route, Navigate, Outlet } from "react-router";
 import { useAuthContext } from "./context/AuthContext";
 import BuyerHome from "./pages/buyer/BuyerHome";
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -42,7 +42,7 @@ function App() {
         path="buyer"
         element={
           !user ? <Navigate to={"/auth/buyer/login"} /> : 
-          user.role === "USER" ? <BuyerHome /> : <Navigate to={"/admin/dashboard"} />
+          user.role === "USER" ? <Outlet /> : <Navigate to={"/admin/dashboard"} />
           // user ? (
           //   user.role !== "USER" ? <Navigate to={"/admin/dashboard"} /> : <BuyerHome />
           // ) : (
@@ -50,7 +50,7 @@ function App() {
           // )
         }
       >
-        {/* <Route index element={<BuyerHome />} /> */}
+        <Route index element={<BuyerHome />} />
         <Route path="search" element={<SearchProduct />} />
         <Route path="product-info" element={<ProductInfo />} />
         <Route path="*" element={<Navigate to={"/auth/buyer/login"} />} />

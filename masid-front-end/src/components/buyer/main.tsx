@@ -43,7 +43,7 @@ export default function Main() {
 
   function onClickProduct(data: product) {
     console.log(data);
-    navigate("/buyer/product-info", {
+    navigate("product-info", {
       state: data,
     });
   }
