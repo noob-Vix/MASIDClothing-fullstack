@@ -19,7 +19,7 @@ import ContactPage from "./pages/Contact";
 
 function App() {
   const { user } = useAuthContext();
-
+  console.log("Current User:", user ? user.role : "No user logged in");
   return (
     <Routes>
 
@@ -28,11 +28,9 @@ function App() {
       <Route
         path="admin/dashboard"
         element={
-          user && user.role === "ADMIN" ? (
-            <AdminDashboard />
-          ) : (
-            <Navigate to={"/auth/admin/login"} />
-          )
+          !user ? <Navigate to={"/auth/admin/login"} /> : 
+          user.role === "ADMIN" ? <AdminDashboard /> : <Navigate to={"/buyer"} />
+          // user ? user.role === "ADMIN" ? <AdminDashboard /> : <Navigate to={"/buyer"} /> : <Navigate to={"/auth/admin/login"} />
         }
       >
         <Route index element={<Manage />} />
@@ -43,14 +41,16 @@ function App() {
       <Route
         path="buyer"
         element={
-          user ? (
-            user.role !== "USER" && <Navigate to={"/admin/dashboard"} />
-          ) : (
-            <Navigate to={"/auth/buyer/login"} />
-          )
+          !user ? <Navigate to={"/auth/buyer/login"} /> : 
+          user.role === "USER" ? <BuyerHome /> : <Navigate to={"/admin/dashboard"} />
+          // user ? (
+          //   user.role !== "USER" ? <Navigate to={"/admin/dashboard"} /> : <BuyerHome />
+          // ) : (
+          //   <Navigate to={"/auth/buyer/login"} />
+          // )
         }
       >
-        <Route index element={<BuyerHome />} />
+        {/* <Route index element={<BuyerHome />} /> */}
         <Route path="search" element={<SearchProduct />} />
         <Route path="product-info" element={<ProductInfo />} />
         <Route path="*" element={<Navigate to={"/auth/buyer/login"} />} />
@@ -59,47 +59,38 @@ function App() {
       <Route
         path="auth/buyer/login"
         element={
-          !user ? (
-            <BuyerLogin />
-          ) : user.role !== "USER" ? (
-            <Navigate to={"/admin/dashboard"} />
-          ) : (
-            <Navigate to={"/buyer"} />
-          )
+          !user ? <BuyerLogin /> : !user.token && user.role === "USER" ? <BuyerLogin /> : <Navigate to={"/buyer"} />
         }
       />
       <Route
         path="auth/buyer/register"
         element={
-          !user ? (
-            <BuyerRegister />
-          ) : (
-            user.role !== "USER" ? <Navigate to={"/admin/dashboard"} /> : <Navigate to={"/buyer"} />
-          )
+          !user ? <BuyerRegister /> : 
+          user ? <Navigate to={"/auth/buyer/login"} /> : <Navigate to={"/auth/admin/login"} />
+          // !user ? (
+          //   <BuyerRegister />
+          // ) : (
+          //   user.role !== "USER" ? <Navigate to={"/admin/dashboard"} /> : <Navigate to={"/buyer"} />
+          // )
         }
       />
       <Route
         path="auth/admin/login"
         element={
-          user ? (
-            user.role === "ADMIN" ? (
-              <Navigate to={"/admin/dashboard"} />
-            ) : (
-              <Navigate to={"/buyer"} />
-            )
-          ) : (
-            <AdminLogin />
-          )
+          !user ? <AdminLogin /> : user.role === "ADMIN" ? <Navigate to={"/admin/dashboard"} /> : <Navigate to={"/buyer"} />
+          // user ? user.role === "ADMIN" ? <Navigate to={"/admin/dashboard"} /> : <Navigate to={"/buyer"} /> : <AdminLogin />
         }
       />
       <Route
         path="auth/admin/register"
         element={
-          user && user.role === "ADMIN" ? (
-            <Navigate to={"/admin/dashboard"} />
-          ) : (
-            <AdminRegister />
-          )
+          !user ? <Navigate to={"/auth/admin/login"} /> : 
+          user.role === "ADMIN" ? <Navigate to={"/admin/dashboard"} /> : <AdminRegister />
+          // user && user.role === "ADMIN" ? (
+          //   <Navigate to={"/admin/dashboard"} />
+          // ) : (
+          //   <AdminRegister />
+          // )
         }
       />
       <Route

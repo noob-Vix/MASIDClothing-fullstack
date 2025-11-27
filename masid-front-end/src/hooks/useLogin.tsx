@@ -10,6 +10,7 @@ export const useLogin = () => {
     const login = async (email: string, password: string,  captchaToken: string) => {
         setIsLoading(true);
         setError(null);
+        console.log({ email, password, captchaToken})
 
         const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/auth/login`, {
             method: 'POST',

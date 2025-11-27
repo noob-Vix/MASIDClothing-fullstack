@@ -30,12 +30,18 @@ export const useRegister = () => {
     const json = await response.json();
 
     if (!response.ok) {
-      setError(json.error);
+      if (response.status === 500) {
+        setError("User with this email already exists.");
+      }
+      if (response.status === 400) {
+        setError("Please fill all the fields correctly.");
+      }
+      // setError(json.error);
       setIsLoading(false);
     }
     if (response.ok) {
-      localStorage.setItem("user", JSON.stringify(json));
-      dispatch({ type: "LOGIN", payload: json });
+      localStorage.setItem("user", JSON.stringify(json.user));
+      dispatch({ type: "LOGIN", payload: json.user });
       setIsLoading(false);
       setError(null);
     }
