@@ -1,5 +1,5 @@
 import { LoginForm } from "@/components/login-form";
-import image from "@/assets/images/img_2.png"
+import image from "@/assets/images/img_2.jpg"
 import logo from "@/assets/images/logo-black.png";
 
 export default function BuyerLogin() {
@@ -7,7 +7,7 @@ export default function BuyerLogin() {
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">
-        <div className="flex justify-center gap-2 md:justify-start">
+        <div className="flex gap-2 justify-start">
           <a href="#" className="flex items-center gap-2 font-medium">
             <div className="flex items-center justify-center">
               <img src={logo} className="size-10 aspect-square" />

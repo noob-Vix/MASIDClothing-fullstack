@@ -68,7 +68,7 @@ export default function ProductInfo() {
               : URL.createObjectURL(imageUrl)
           }
         />
-        <div className="h-[40%] w-[25%] max-sm:w-full flex flex-col justify-between">
+        <div className="h-[40%] w-[25%] max-sm:w-full max-sm:h-full flex flex-col justify-between">
           <div className="flex flex-col gap-2">
             <h1 className="text-3xl overflow-hidden text-ellipsis font-semibold text-neutral-800">
               {name}
@@ -77,7 +77,7 @@ export default function ProductInfo() {
               {description}
             </p>
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 mt-auto">
             <span className="text-md font-semibold text-neutral-800">
               Price {price}
             </span>

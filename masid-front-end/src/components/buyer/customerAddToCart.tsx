@@ -59,7 +59,9 @@ export default function CustomerAddToCart() {
   function saveCartToLocal(updated: extendedProducts[]) {
     localStorage.setItem(
       "item",
-      JSON.stringify(updated.map((i) => ({ productId: i.id, quantity: i.quantity })))
+      JSON.stringify(
+        updated.map((i) => ({ productId: i.id, quantity: i.quantity }))
+      )
     );
   }
 
@@ -82,7 +84,9 @@ export default function CustomerAddToCart() {
   // Decrement quantity (min 1)
   function decreaseQuantity(id: string) {
     const updated = cart.map((item) =>
-      item.id === id && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
+      item.id === id && item.quantity > 1
+        ? { ...item, quantity: item.quantity - 1 }
+        : item
     );
     setCart(updated);
     saveCartToLocal(updated);
@@ -118,7 +122,9 @@ export default function CustomerAddToCart() {
     if (checkedItems.length === cart.length) {
       setCheckedItems([]);
     } else {
-      setCheckedItems(cart.map((item) => ({ productId: item.id, quantity: item.quantity })));
+      setCheckedItems(
+        cart.map((item) => ({ productId: item.id, quantity: item.quantity }))
+      );
     }
   };
 
@@ -128,14 +134,17 @@ export default function CustomerAddToCart() {
 
     setIsLoading(true);
 
-    const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/order/create`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${user.token}`,
-      },
-      body: JSON.stringify({ items: checkedItems }),
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_SERVER_URL}/order/create`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({ items: checkedItems }),
+      }
+    );
 
     const json = await response.json();
 
@@ -160,10 +169,11 @@ export default function CustomerAddToCart() {
 
   // Calculate total
   const totalPrice = checkedItems.reduce((acc, ci) => {
-  const productPrice = Number(cart.find((p) => p.id === ci.productId)?.price ?? 0);
-  return acc + productPrice * ci.quantity;
-}, 0);
-
+    const productPrice = Number(
+      cart.find((p) => p.id === ci.productId)?.price ?? 0
+    );
+    return acc + productPrice * ci.quantity;
+  }, 0);
 
   return (
     <Dialog>
@@ -172,25 +182,33 @@ export default function CustomerAddToCart() {
           <ShoppingCart className="!size-6" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="flex flex-col max-sm:rounded-none max-sm:min-w-full max-sm:min-h-full max-h-[60%]">
-        <DialogHeader>
-          <DialogTitle className="text-neutral-800 text-start">Your Cart</DialogTitle>
+      <DialogContent className="p-0 gap-0 flex flex-col max-sm:rounded-none max-sm:min-w-full max-sm:min-h-dvh max-h-[60%]">
+        <DialogHeader className="border-b p-4">
+          <DialogTitle className="text-neutral-800 text-start">
+            Your Cart
+          </DialogTitle>
           <DialogDescription hidden>Your cart</DialogDescription>
         </DialogHeader>
 
-        <div className="flex flex-col overflow-y-scroll h-full gap-2">
+        <div className="px-4 pt-4 flex flex-col overflow-y-scroll h-full gap-2">
           {cart.length ? (
             cart.map((item) => (
               <div key={item.id} className="flex gap-3 max-w-full items-center">
                 <input
                   type="checkbox"
-                  checked={checkedItems.some((checked) => checked.productId === item.id)}
+                  checked={checkedItems.some(
+                    (checked) => checked.productId === item.id
+                  )}
                   onChange={() => handleCheckItem(item.id, item.quantity)}
                   className="accent-neutral-800"
                 />
                 <img
-                  className="aspect-square object-cover w-[3rem] rounded-2xl"
-                  src={typeof item.imageUrl === "string" ? item.imageUrl : URL.createObjectURL(item.imageUrl)}
+                  className="aspect-square object-cover w-[4rem] rounded-lg border"
+                  src={
+                    typeof item.imageUrl === "string"
+                      ? item.imageUrl
+                      : URL.createObjectURL(item.imageUrl)
+                  }
                   alt="product image"
                 />
                 <div className="flex flex-col w-full overflow-hidden">
@@ -200,15 +218,29 @@ export default function CustomerAddToCart() {
                   <div className="flex justify-between items-center mt-1">
                     {/* Quantity controls */}
                     <div className="flex items-center gap-2">
-                      <Button variant="outline" size="sm" onClick={() => decreaseQuantity(item.id)}>
+                      <Button
+                        className="text-center font-bold text-gray-800"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => decreaseQuantity(item.id)}
+                      >
                         -
                       </Button>
-                      <span className="font-semibold text-md text-neutral-700">{item.quantity}</span>
-                      <Button variant="outline" size="sm" onClick={() => increaseQuantity(item.id)}>
+                      <span className="font-semibold text-md text-neutral-700">
+                        {item.quantity}
+                      </span>
+                      <Button
+                        className="text-center font-bold text-gray-800"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => increaseQuantity(item.id)}
+                      >
                         +
                       </Button>
                     </div>
-                    <span className="font-semibold text-md text-neutral-700">₱{item.price}</span>
+                    <span className="font-semibold text-md text-neutral-700">
+                      ₱{item.price}
+                    </span>
                     <Button
                       variant={"outline"}
                       size={"sm"}
@@ -228,30 +260,36 @@ export default function CustomerAddToCart() {
           )}
         </div>
 
-        {/* Total and shipping */}
-        <div className="flex flex-col gap-1 mt-2">
-          <p className="text-neutral-700 font-semibold">
-            Subtotal: ₱{totalPrice}
-          </p>
-          <p className="text-neutral-700 font-semibold">Shipping: ₱{SHIPPING_FEE}</p>
-          <p className="text-neutral-800 font-bold">
-            Total: ₱{totalPrice + SHIPPING_FEE}
-          </p>
-        </div>
+        <div className="mt-auto">
+          <div className="border-t p-4 flex flex-col gap-1 mt-2 text-sm">
+            <p className="text-neutral-700 font-semibold">
+              Subtotal: ₱{totalPrice}
+            </p>
+            <p className="text-neutral-700 font-semibold">
+              Shipping: ₱{SHIPPING_FEE}
+            </p>
+            <p className="text-neutral-800 font-bold">
+              Total: ₱{totalPrice + SHIPPING_FEE}
+            </p>
+          </div>
 
-        <div className="flex justify-between items-center h-fit py-2 gap-2 mt-auto">
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={checkedItems.length === cart.length && cart.length > 0}
-              onChange={handleCheckAll}
-              className="accent-neutral-800"
-            />
-            <span className="font-semibold text-neutral-700">Check All</span>
-          </label>
-          <Button onClick={placeOrder} disabled={cart.length === 0 || !checkedItems.length}>
-            {isLoading ? <Loader2Icon /> : "Place Order"}
-          </Button>
+          <div className="flex justify-between items-center h-fit p-4 border-t gap-2">
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={checkedItems.length === cart.length && cart.length > 0}
+                onChange={handleCheckAll}
+                className="accent-neutral-800"
+              />
+              <span className="font-semibold text-neutral-700">Check All</span>
+            </label>
+            <Button
+              onClick={placeOrder}
+              disabled={cart.length === 0 || !checkedItems.length}
+            >
+              {isLoading ? <Loader2Icon /> : "Place Order"}
+            </Button>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

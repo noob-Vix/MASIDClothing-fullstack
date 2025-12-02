@@ -105,12 +105,12 @@ export function SearchForm({ ...props }: React.ComponentProps<"form">) {
   }
 
   return (
-    <div className="flex flex-wrap gap-2 w-full">
+    <div className="flex max-sm:flex-wrap gap-2 w-full">
       <form {...props} onSubmit={handleSearch} className="flex gap-3 w-full items-center">
         <Input
           type="search"
           placeholder="Search Products"
-          className="border-1 w-full"
+          className="border-1 max-sm:w-full w-1/2"
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />

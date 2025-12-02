@@ -66,20 +66,20 @@ export default function CustomerOrder({ orders }: CustomerOrderProps) {
           <ShoppingBag className="!size-6" /> Orders
         </Button>
       </DialogTrigger>
-      <DialogContent className="flex flex-col max-sm:min-w-full max-sm:min-h-screen max-sm:rounded-none">
-        <DialogHeader>
+      <DialogContent className="p-0 flex flex-col h-[300px] max-sm:min-w-full max-sm:min-h-screen max-sm:rounded-none">
+        <DialogHeader className="border-b p-4">
           <DialogTitle className="w-full flex justify-start text-neutral-800">
             Orders
           </DialogTitle>
           <DialogDescription hidden>Your orders</DialogDescription>
         </DialogHeader>
         <div className="flex overflow-y-auto max-h-full max-w-full">
-          <div className="flex flex-col-reverse gap-2 w-full">
+          <div className="p-4 flex flex-col-reverse gap-2 w-full">
             {orders.length !== 0 ? (
               orders.map((item) => (
                 <div key={item.id} className="flex gap-3 max-w-full">
                   <img
-                    className="aspect-square object-cover w-[4rem] h-[4rem] rounded-2xl"
+                    className="aspect-square object-cover w-[4rem] border h-[4rem] rounded-2xl"
                     src={
                       typeof item.product.imageUrl === "string"
                         ? item.product.imageUrl

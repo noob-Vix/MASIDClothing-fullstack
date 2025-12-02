@@ -29,16 +29,16 @@ export default function CustomerProfile({ customer }: CustomerProfileProps) {
           <User className="!size-6" /> Profile
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-auto max-sm:min-w-full max-sm:min-h-full max-sm:flex max-sm:flex-col max-sm:rounded-none">
-        <DialogHeader>
+      <DialogContent className="w-[500px] p-0 max-sm:min-w-full max-sm:min-h-full max-sm:flex max-sm:flex-col max-sm:rounded-none">
+        <DialogHeader className="border-b p-4">
           <DialogTitle className="text-neutral-800 text-start">{!editAddress ? "Profile" : "Edit Address"}</DialogTitle>
           <DialogDescription hidden>Your profile</DialogDescription>
         </DialogHeader>
-        {!editAddress && <div>
+        {!editAddress && <div className="flex justify-end px-4">
           <Button
             variant={"outline"}
             onClick={() => setEditAddress((prev) => !prev)}
-            className="font-semibold text-neutral-800"
+            className="font-semibold text-neutral-800 w-28"
           >
             Edit Address
           </Button>
@@ -46,70 +46,70 @@ export default function CustomerProfile({ customer }: CustomerProfileProps) {
         {editAddress ? (
           <CustomerEditAddress setState={setEditAddress} address={customer.address} />
         ) : (
-          <div className="flex max-sm:flex-col gap-10">
-            <div>
-              <div>
+          <div className="flex justify-between max-sm:flex-col gap-10 p-4">
+            <div className="space-y-1 w-1/2 max-sm:w-full">
+              <div className="flex flex-col gap-1 overflow-hidden">
                 <h1 className="font-semibold text-sm text-neutral-800">Name</h1>
-                <p className="font-medium text-sm text-neutral-700">
+                <p className="p-2 border rounded-lg truncate font-medium text-sm text-neutral-700">
                   {customer.name}
                 </p>
               </div>
-              <div>
+              <div className="flex flex-col gap-1 overflow-hidden">
                 <h1 className="font-semibold text-sm text-neutral-800">
                   Email
                 </h1>
-                <p className="font-medium text-sm text-neutral-700">
+                <p className="p-2 border rounded-lg truncate font-medium text-sm text-neutral-700">
                   {customer.email}
                 </p>
               </div>
-              <div>
+              <div className="flex flex-col gap-1 overflow-hidden">
                 <h1 className="font-semibold text-sm text-neutral-800">
                   Phone Number
                 </h1>
-                <p className="font-medium text-sm text-neutral-700">
+                <p className="p-2 border rounded-lg truncate font-medium text-sm text-neutral-700">
                   {customer.phoneNumber}
                 </p>
               </div>
             </div>
             {customer.address ? (
-              <div>
-                <div>
+              <div className="space-y-1 w-1/2 max-sm:w-full">
+                <div className="flex flex-col gap-1 overflow-hidden">
                   <h1 className="font-semibold text-sm text-neutral-800">
                     Street
                   </h1>
-                  <p className="font-medium text-sm text-neutral-700">
+                  <p className="p-2 border rounded-lg truncate font-medium text-sm text-neutral-700">
                     {customer.address.street}
                   </p>
                 </div>
-                <div>
+                <div className="flex flex-col gap-1 overflow-hidden">
                   <h1 className="font-semibold text-sm text-neutral-800">
                     City
                   </h1>
-                  <p className="font-medium text-sm text-neutral-700">
+                  <p className="p-2 border rounded-lg truncate font-medium text-sm text-neutral-700">
                     {customer.address.city}
                   </p>
                 </div>
-                <div>
+                <div className="flex flex-col gap-1 overflow-hidden">
                   <h1 className="font-semibold text-sm text-neutral-800">
                     State
                   </h1>
-                  <p className="font-medium text-sm text-neutral-700">
+                  <p className="p-2 border rounded-lg truncate font-medium text-sm text-neutral-700">
                     {customer.address.state}
                   </p>
                 </div>
-                <div>
+                <div className="flex flex-col gap-1 overflow-hidden">
                   <h1 className="font-semibold text-sm text-neutral-800">
                     Zip code
                   </h1>
-                  <p className="font-medium text-sm text-neutral-700">
+                  <p className="p-2 border rounded-lg truncate font-medium text-sm text-neutral-700">
                     {customer.address.zipCode}
                   </p>
                 </div>
-                <div>
+                <div className="flex flex-col gap-1 overflow-hidden">
                   <h1 className="font-semibold text-sm text-neutral-800">
                     Country
                   </h1>
-                  <p className="font-medium text-sm text-neutral-700">
+                  <p className="p-2 border rounded-lg truncate font-medium text-sm text-neutral-700">
                     {customer.address.country}
                   </p>
                 </div>

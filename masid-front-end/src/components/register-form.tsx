@@ -15,7 +15,7 @@ import { useRegister } from "@/hooks/useRegister";
 import { Link } from "react-router";
 
 type RegisterProps = {
-  role?: "admin" | ""
+  role?: "ADMIN" | "USER"
   href?: string
   title?: string
 }

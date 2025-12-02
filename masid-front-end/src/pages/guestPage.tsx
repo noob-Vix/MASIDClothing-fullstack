@@ -45,10 +45,10 @@ export default function GuestPage() {
     <>
       {/* Header */}
       <header className="p-4 flex flex-wrap justify-between gap-3">
-        <div className="flex gap-10 items-center">
+        <div className="flex gap-10 items-center w-full">
           <img className="aspect-square w-12 max-sm:hidden" src={logo} />
           <Link to={"/buyer/search"}>
-            <Button className="w-96 max-sm:w-64 text-neutral-400" variant="outline">
+            <Button className="w-96 min-sm:w-full lg:w-90 text-neutral-400" variant="outline">
               Search products
             </Button>
           </Link>
@@ -80,7 +80,7 @@ export default function GuestPage() {
             Discover high-quality Shoes designed for everyday comfort.
           </p>
           <Link to="/buyer/search">
-            <Button className="w-40 mx-auto">Shop Now</Button>
+            <Button className="w-40 mx-auto bg-white text-black">Shop Now</Button>
           </Link>
         </div>
       </section>
@@ -103,7 +103,7 @@ export default function GuestPage() {
             ))}
           </div>
         ) : product.length !== 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          <div className="flex flex-wrap gap-2">
             {product.map((p) => (
               <ProductCard key={p.id} data={p} onClick={() => onClickProduct(p)} />
             ))}

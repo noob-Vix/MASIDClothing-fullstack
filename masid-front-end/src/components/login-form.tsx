@@ -95,9 +95,9 @@ export function LoginForm({ href, title, des }: LoginProps) {
             </FormItem>
           )}
         />
-        <p>{error ? error : null}</p>
+        <p className="text-red-600 font-medium">{error ? error : null}</p>
         <ReCAPTCHA 
-        sitekey="6LcuNRksAAAAAGzI_TRuFenmUeKhhQDJc1XVQiDz"
+        sitekey="6Ldpk7ArAAAAAEWjwcTREcHRH4u12ByICBHD-s3Q"
         onChange={(token) => setCaptchaToken(token)}/>
         <Button type="submit" className="w-full" disabled={isLoading}>
           Login

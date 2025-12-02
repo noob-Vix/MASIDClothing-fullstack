@@ -81,7 +81,7 @@ export default function CustomerEditAddress({ setState, address }: CustomerEditA
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-[25rem] max-sm:w-fit">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-4 pb-4 w-full">
         <FormField
           control={form.control}
           name="street"
